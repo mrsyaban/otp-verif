@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const usersSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Please provide a username"],
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a regency"],
     },
-    isVerfied: {
+    isVerified: {
         type: Boolean,
         default: false,
     },
@@ -44,6 +44,6 @@ const userSchema = new mongoose.Schema({
     reqCount: Number,
 })
 
-const User = mongoose.models.users || mongoose.model("users", userSchema);
+const User = mongoose.models.usersData|| mongoose.model("usersData", usersSchema);
 
 export default User;

@@ -17,6 +17,11 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "your on the request limit (5)" }, { status: 400 });
     }
 
+    // check otp expired
+    if (Date.now() < user.otpExp) {
+      return NextResponse.json({ error: "you can resend after 5 minutes from your last attempt" }, { status: 400 });
+    }
+
     // Generate OTP
     const otp = crypto.randomInt(100000, 999999);
     

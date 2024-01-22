@@ -22,8 +22,10 @@ export async function POST(request: NextRequest) {
       user.isVerified = true;
       await user.save();
     }
+    
+    const userUpdated = await User.findOne({ phone });
 
-    return NextResponse.json({ message:"OTP valid", success: true }, { status: 200 });
+    return NextResponse.json({ message:"OTP valid", success: true, data:userUpdated }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

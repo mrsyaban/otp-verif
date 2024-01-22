@@ -35,16 +35,15 @@ export async function POST(request: NextRequest) {
     });
     
     const savedUser = await newUser.save();
-    console.log(savedUser);
 
     // send OTP
     const phoneNumber = phone.replace(/\D/g, '');
-    await fetch(`https://wa.ikutan.my.id/send/${process.env.API_TOKEN}/${phoneNumber}?text=your otp is ${otp}`, {
+    await fetch(`https://wa.ikutan.my.id/send/${process.env.API_TOKEN}/${phoneNumber}?text="your otp is ${otp}"`, {
       method: "GET",
     });
 
     return NextResponse.json({
-      message: "User created successfully",
+      message: "Please verify your phone number",
       success: true,
       savedUser,
     }, { status: 200 });

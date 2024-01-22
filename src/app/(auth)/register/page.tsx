@@ -4,8 +4,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { HiEye, HiEyeOff } from "react-icons/hi";
 import toast, {Toaster} from 'react-hot-toast';
 import axios from 'axios';
-import {useRouter} from "next/navigation";
-import { set } from 'mongoose';
+import { useRouter } from 'next/navigation';
 
 interface RegisterForm {
   name: string;
@@ -59,7 +58,6 @@ const RegisterPage = () => {
       toast.error("Phone number must start with +62");
       return;
     }
-    console.log(formData);
 
     toast.promise(
       (async () => {
@@ -70,21 +68,41 @@ const RegisterPage = () => {
 
         if (response.status === 200) {
           setIsOtpSent(true);
-        } else {
-          return new Promise((_, reject) => {
-            reject(new Error("Register failed"));
-          });
         }
       })(),
       {
         loading: "Loading...",
-        success: <b>Message has been send</b>,
-        error: <b>SignUp Error</b>,
+        success: <b>Please verify your phone number</b>,
+        error: (error) => <b>{error.message}</b>,
       }
     );
   };
 
   
+  const handleResend = () => {
+    toast.promise(
+      (async () => {
+        const response = await axios.post(
+          "/api/users/resend-otp",
+          {
+            phone: formData.phone,
+          }
+        );
+
+        if (response.status !== 200) {
+          return new Promise((_, reject) => {
+            reject(new Error("verification failed"));
+          });
+        }
+      })(),
+      {
+        loading: "Loading...",
+        success: <b>OTP has been sent</b>,
+        error:(error) => <b>{error.message}</b>,
+      }
+    );
+  }
+
   const handleVerify = () => {
     toast.promise(
       (async () => {
@@ -100,12 +118,14 @@ const RegisterPage = () => {
           return new Promise((_, reject) => {
             reject(new Error("verification failed"));
           });
+        } else {
+          router.push('/');
         }
       })(),
-      {
+      { 
         loading: "Loading...",
-        success: <b>Message has been send</b>,
-        error: <b>SignUp Error</b>,
+        success: <b>Sign Up Successfully</b>,
+        error: (error) => <b>{error.message}</b>,
       }
     );
   }
@@ -114,11 +134,11 @@ const RegisterPage = () => {
     <>
     { isOtpSent ?
         <div className="flex flex-col gap-2 h-screen items-center justify-center text-white">
-        <Toaster/>
+        <Toaster />
         <h2>Enter the 6-digit OTP</h2>
-        <input type="number" onChange={(e) => setInputOTP(parseInt(e.target.value))} />
-        <button className="bg-slate-400 rounded-md py-2 px-4">Verify</button>
-        <button className="bg-slate-400 rounded-md py-2 px-4">Resend</button>
+        <input type="number" className='text-slate-800 text-center justify-center py-2' onChange={(e) => setInputOTP(parseInt(e.target.value))} />
+        <button onClick={handleVerify} className="bg-slate-400 hover:bg-slate-600 rounded-md py-2 px-4">Verify</button>
+        <button onClick={handleResend} className="bg-slate-400 hover:bg-slate- rounded-md py-2 px-4">Resend</button>
     </div> :
 
     <div className="flex justify-center items-center bg-black">
