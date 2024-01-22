@@ -9,6 +9,11 @@ export async function POST(request: NextRequest) {
 
     const user = await User.findOne({ phone });
 
+    // check otp expired
+    if (Date.now() > user.otpExp) {
+      return NextResponse.json({ error: "OTP expired" }, { status: 400 });
+    }
+
     // otp validation
     const savedOTP = user.otp; 
     if (inputOTP !== savedOTP) {

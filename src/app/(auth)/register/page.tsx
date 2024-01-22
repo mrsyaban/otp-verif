@@ -5,6 +5,7 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import toast, {Toaster} from 'react-hot-toast';
 import axios from 'axios';
 import {useRouter} from "next/navigation";
+import { set } from 'mongoose';
 
 interface RegisterForm {
   name: string;
@@ -68,7 +69,7 @@ const RegisterPage = () => {
         );
 
         if (response.status === 200) {
-          router.push("/verify-otp")
+          setIsOtpSent(true);
         } else {
           return new Promise((_, reject) => {
             reject(new Error("Register failed"));
