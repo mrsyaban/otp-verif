@@ -1,7 +1,9 @@
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { connect } from "@/config/db";
 
+connect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();

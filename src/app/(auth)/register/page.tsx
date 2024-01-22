@@ -77,7 +77,12 @@ const RegisterPage = () => {
       {
         loading: "Loading...",
         success: <b>Please verify your phone number</b>,
-        error: <b>Sign Up failed</b>,
+        error: (error) => {
+          if (error.response) {
+            return <b>{error.response.data.message}</b>
+          }
+          return <b>Sign Up failed</b>
+        },
       }
     );
   };
@@ -102,7 +107,12 @@ const RegisterPage = () => {
       {
         loading: "Loading...",
         success: <b>OTP has been sent</b>,
-        error:<b>failed to send OTP</b>,
+        error: (error) => {
+          if (error.response) {
+            return <b>{error.response.data.message}</b>
+          }
+          return <b>Failed to send OTP</b>
+        },
       }
     );
   }
@@ -129,7 +139,12 @@ const RegisterPage = () => {
       { 
         loading: "Loading...",
         success: <b>Sign Up Successfully</b>,
-        error: <b>Failed to verify token</b>,
+        error: (error) => {
+          if (error.response) {
+            return <b>{error.response.data.message}</b>
+          }
+          return <b>Failed to verify token</b>
+        },
       }
     );
   }
