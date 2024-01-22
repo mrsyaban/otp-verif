@@ -11,13 +11,13 @@ export async function POST(request: NextRequest) {
 
     // check otp expired
     if (Date.now() > user.otpExp) {
-      return NextResponse.json({ error: "OTP expired" }, { status: 400 });
+      return NextResponse.json({ message: "OTP expired" }, { status: 400 });
     }
 
     // otp validation
     const savedOTP = user.otp; 
     if (inputOTP !== savedOTP) {
-      return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
+      return NextResponse.json({ message: "Invalid OTP" }, { status: 400 });
     } else {
       user.isVerified = true;
       await user.save();
@@ -27,6 +27,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message:"OTP valid", success: true, data:userUpdated }, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

@@ -68,12 +68,16 @@ const RegisterPage = () => {
 
         if (response.status === 200) {
           setIsOtpSent(true);
+        } else {
+          return new Promise((_, reject) => {
+            reject(new Error(response.data.message));
+          });
         }
       })(),
       {
         loading: "Loading...",
         success: <b>Please verify your phone number</b>,
-        error: (error) => <b>{error.message}</b>,
+        error: <b>Sign Up failed</b>,
       }
     );
   };
@@ -91,14 +95,14 @@ const RegisterPage = () => {
 
         if (response.status !== 200) {
           return new Promise((_, reject) => {
-            reject(new Error("verification failed"));
+            reject(new Error(response.data.message));
           });
         }
       })(),
       {
         loading: "Loading...",
         success: <b>OTP has been sent</b>,
-        error:(error) => <b>{error.message}</b>,
+        error:<b>failed to send OTP</b>,
       }
     );
   }
@@ -116,7 +120,7 @@ const RegisterPage = () => {
 
         if (response.status !== 200) {
           return new Promise((_, reject) => {
-            reject(new Error("verification failed"));
+            reject(new Error(response.data.message));
           });
         } else {
           router.push('/');
@@ -125,7 +129,7 @@ const RegisterPage = () => {
       { 
         loading: "Loading...",
         success: <b>Sign Up Successfully</b>,
-        error: (error) => <b>{error.message}</b>,
+        error: <b>Failed to verify token</b>,
       }
     );
   }

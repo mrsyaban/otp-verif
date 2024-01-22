@@ -12,14 +12,14 @@ export async function POST(request: NextRequest) {
 
     const user = await User.findOne({ phone });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     } else if (user.reqCount >= 5) {
-        return NextResponse.json({ error: "your on the request limit (5)" }, { status: 400 });
+        return NextResponse.json({ message: "your on the request limit (5)" }, { status: 400 });
     }
 
     // check otp expired
     if (Date.now() < user.otpExp) {
-      return NextResponse.json({ error: "you can resend after 5 minutes from your last attempt" }, { status: 400 });
+      return NextResponse.json({ message: "you can resend after 5 minutes from your last attempt" }, { status: 400 });
     }
 
     // Generate OTP
@@ -44,6 +44,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
