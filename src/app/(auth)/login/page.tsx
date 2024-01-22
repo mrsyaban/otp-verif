@@ -31,14 +31,12 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/users/login', formData);
-      if (response.data.message === "User not verified" && response.status === 301) {
-        toast.error("User not verified");
-        setIsOtpSent(true);
-      } else if (response.status === 200) {
-        toast.success("Login Successful");
-      }
+      toast.success("Login Successful");
     } catch (error:any) {
       if (error.response) {
+        if (error.response.data.message === "User not verified" && error.response.status === 301) {
+          setIsOtpSent(true);
+        }
         toast.error(error.response.data.message);
       } else {
         toast.error(error.message);

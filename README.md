@@ -10,6 +10,7 @@
 - [Technologies Used](#technologies-used)
 - [Setup](#setup)
 - [Usage](#usage)
+- [Documentation](#documentation)
 - [](#)
 
 
@@ -39,6 +40,21 @@ You can run the server by using the command below on your local.
 ```bash
 npm run dev
 ```
+
+<a name="documentation"></a>
+
+## Documentation
+<h3 align="center">signup</h3>
+
+![sign up](docs/signup.png)
+
+<h3 align="center">verify otp</h3>
+
+![verify otp](docs/verify-otp.png)
+
+<h3 align="center">log in</h3>
+
+![login](docs/login.png)
 
 <a name="contact"></a>
 
