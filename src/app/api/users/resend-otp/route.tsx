@@ -28,14 +28,17 @@ export async function POST(request: NextRequest) {
     user.otp = otp;
     user.otpExp = Date.now() + 5 * 60 * 1000;
     user.reqCount = user.reqCount + 1;
-    const savedUser = await user.save();
-
+    
     // send OTP
     const phoneNumber = phone.replace(/\D/g, '');
-    await fetch(`https://wa.ikutan.my.id/send/${process.env.API_TOKEN}/${phoneNumber}?text=your otp is ${otp}`, {
+    const sendOtp =  await fetch(`https://wa.ikutan.my.id/send/${process.env.API_TOKEN}/${phoneNumber}?text="your otp is ${otp}"`, {
       method: "GET",
     });
-
+    if (!sendOtp.ok) {
+      return NextResponse.json({ message: "failed to send otp" }, { status: 500 });
+    }
+    
+    const savedUser = await user.save();
     return NextResponse.json({
       message: "User created successfully",
       success: true,

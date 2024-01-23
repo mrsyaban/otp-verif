@@ -38,10 +38,12 @@ export async function POST(request: NextRequest) {
 
     // send OTP
     const phoneNumber = phone.replace(/\D/g, '');
-    await fetch(`https://wa.ikutan.my.id/send/${process.env.API_TOKEN}/${phoneNumber}?text="your otp is ${otp}"`, {
-      method: "GET",
-    });
-
+    const sendOtp =  await fetch(`https://wa.ikutan.my.id/send/${process.env.API_TOKEN}/${phoneNumber}?text="your otp is ${otp}"`, {
+        method: "GET",
+      });
+    if (!sendOtp.ok) {
+      return NextResponse.json({ message: "failed to send otp" }, { status: 500 });
+    }
     return NextResponse.json({
       message: "Please verify your phone number",
       success: true,
